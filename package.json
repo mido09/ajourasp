@@ -10,7 +10,8 @@
   "license": "ISC",
   "dependencies": {
     "onoff": "^6.0.0",
-    "pigpio": "^3.2.3"
+    "pigpio": "^3.2.3",
+    "socket.io-client": "^2.3.0"
   }
 }
 

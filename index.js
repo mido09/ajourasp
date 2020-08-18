@@ -24,7 +24,7 @@ const watchHCSR04 = () => {
       const endTick = tick;
       const diff = (endTick >> 0) - (startTick >> 0); // Unsigned 32 bit arithmetic
       var currentMeasurement= diff / 2 / MICROSECONDS_PER_CM;
-      console.log(currentMeasurement);
+      //console.log(currentMeasurement);
       if(lastLine!=null){
 	var differ = Math.abs(lastLine-currentMeasurement);
 	if(differ>5){
@@ -85,6 +85,7 @@ if(alerting==false)
 {
 alerting = true;
 alertingJob = setInterval(startAlerting,400);
+socket.emit("alerting");
 }
 };
 
@@ -96,4 +97,28 @@ clearInterval(alertingJob);
 }
 }
 
+
+//socket io communication methods
+var socket = require('socket.io-client')('http://193.46.198.9:1300');
+socket.on('connect', function(){
+ 	console.log('Connected to socket ......'); 
+	socket.emit("cardState",{'state':onState});
+});
+socket.on('setOff', function(data){
+	console.log('Received setOff event from server');
+	setOff();
+	stopAlarm();
+});
+
+socket.on('setOn', function(data){
+        console.log('Received setOn event from server');
+        setOn();
+});
+
+socket.on('reset', function(data){
+        console.log('Received reset event from server');
+        stopAlarm();
+});
+
+socket.on('disconnect', function(){});
 
